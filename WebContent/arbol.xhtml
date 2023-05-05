@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<style type="">
+		button.ui-button {
+			margin-left: 1rem;
+		}
+		
+		h2{
+		color: #0ab00a;
+		text-align: center;
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+		}
+</style>
+</h:head>
+
+
+<body>
+	<h:form id="formulario">
+		<h2>LISTADO TIPO ÁRBOL</h2>
+		<p:commandButton value="Agregar nivel"
+			actionListener="#{departamentoController.setSelectedDepartamento(departamento)}"
+			onclick="PF('modalNivel').show();" />
+
+
+		<p:tree value="#{departamentoController.root}" var="departamento"
+			id="arbol">
+			<p:treeNode expandedIcon="pi pi-folder-open"
+				collapsedIcon="pi pi-folder">
+				<h:outputText value="#{departamento.nombre}" />
+
+
+				<p:commandButton value="Agregar Subnivel" icon="pi pi-plus-circle"
+					styleClass="ui-button-raised"
+					actionListener="#{departamentoController.setSelectedDepartamento(departamento)}"
+					onclick="PF('modalSub').show();" />
+
+				<p:commandButton value="Eliminar" icon="pi pi-trash"
+					actionListener="#{departamentoController.eliminarNodo(departamento)}"
+					process="@this" update="formulario:arbol" />
+			</p:treeNode>
+		</p:tree>
+	</h:form>
+
+	<p:dialog header="Datos Subnivel" widgetVar="modalSub" modal="true"
+		resizable="false">
+		<h:form>
+			<h:outputText value="Ingrese el nombre: " />
+			<p:inputText id="inputId"
+				value="#{departamentoController.nombreNuevoSubnivel}" />
+			<br />
+			<br />
+			<br />
+
+			<p:commandButton value="Confirmar"
+				actionListener="#{departamentoController.agregarSubnivel(departamentoController.selectedDepartamento)}"
+				update="formulario:arbol" oncomplete="PF('modalSub').hide();" />
+
+			<p:commandButton value="Cancelar" onclick="PF('modalSub').hide();" />
+
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Datos Nivel" widgetVar="modalNivel" modal="true"
+		resizable="false">
+		<h:form>
+			<h:outputText value="Ingrese el nombre: " />
+			<p:inputText id="inputId"
+				value="#{departamentoController.nombreNuevoSubnivel}" />
+			<br />
+			<br />
+			<br />
+
+			<p:commandButton value="Confirmar"
+				actionListener="#{departamentoController.agregarNivel(departamentoController.selectedDepartamento)}"
+				update="formulario:arbol" oncomplete="PF('modalNivel').hide();" />
+			<p:commandButton value="Cancelar" onclick="PF('modalNivel').hide();" />
+
+		</h:form>
+	</p:dialog>
+
+
+</body>
+</html>
